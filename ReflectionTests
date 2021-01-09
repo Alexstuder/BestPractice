@@ -1,0 +1,45 @@
+class ClimateFtpDataDownloaderTest {
+
+    @Test
+    public void createDirectory() {
+
+        File directory = null;
+
+        // Class which includes the private method
+        ClimateFtpDataDownloader downloader = new ClimateFtpDataDownloader();
+        try {
+            // Declare private Method to test
+            Method method = ClimateFtpDataDownloader.class.getDeclaredMethod("getDirectory");
+            method.setAccessible(true);
+
+            // Declare needed private field
+            Field fieldWin = ClimateFtpDataDownloader.class.getDeclaredField("windowsFolderName");
+            fieldWin.setAccessible(true);
+            fieldWin.set(downloader, "C:\\temp\\ClimateAnalyzer");
+
+            // Declare needed private field
+            Field fieldLinux = ClimateFtpDataDownloader.class.getDeclaredField("linuxFolderName");
+            fieldLinux.setAccessible(true);
+            fieldLinux.set(downloader, "/tmp/ClimateAnalyzer");
+
+            // Declare needed private field
+            Field fieldFolde = ClimateFtpDataDownloader.class.getDeclaredField("ftpDataFolderName");
+            fieldFolde.setAccessible(true);
+            fieldFolde.set(downloader, "FTPData");
+
+            // ********************************************************************************
+            // Invoke the method
+            // ********************************************************************************
+            directory = (File) method.invoke(downloader);
+
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+
+        Assertions.assertTrue(directory.isDirectory());
+
+    }
+
+}
